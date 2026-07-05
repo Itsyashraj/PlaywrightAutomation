@@ -15,3 +15,17 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# Maven
+target/
+
+# TestNG
+test-output/
+
+# Logs
+*.log
