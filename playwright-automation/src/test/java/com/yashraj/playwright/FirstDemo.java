@@ -33,7 +33,7 @@ public class FirstDemo {
 	public void f() {
 		page.locator("#user-name").fill("standard_user");
 	    page.locator("#password").fill("secret_sauce");
-	    page.waitForTimeout(5000);
+	    page.waitForTimeout(1000);
 	    page.locator("#login-button").click();
 
 	    String title = page.title();
