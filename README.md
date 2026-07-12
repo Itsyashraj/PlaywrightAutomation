@@ -236,7 +236,7 @@ Close Browser
 
 QA Automation Engineer
 
-GitHub: https://github.com/<your-github-username>
+GitHub: [https://github.com/Itsyashraj]
 
 ---
 
