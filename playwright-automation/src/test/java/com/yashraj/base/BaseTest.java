@@ -1,14 +1,16 @@
 package com.yashraj.base;
 
-import org.testng.annotations.Test;
-
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.yashraj.utils.ConfigReader;
 
 import org.testng.annotations.BeforeMethod;
+
+import java.util.Arrays;
+
 import org.testng.annotations.AfterMethod;
 
 public class BaseTest {
@@ -23,18 +25,46 @@ public class BaseTest {
 		// create playwright insctance
 		playwright = Playwright.create();
 
+		String browserName = ConfigReader.getProperty("browser");
+
 		// Launch browser
-		browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+		switch (browserName.toLowerCase()) {
+
+		case "chromium":
+			browser = playwright.chromium()
+					.launch(new BrowserType.LaunchOptions()
+							.setHeadless(Boolean.parseBoolean(ConfigReader.getProperty("headless")))
+							.setArgs(Arrays.asList("--start-maximized")));
+			break;
+
+		case "firefox":
+			browser = playwright.firefox()
+					.launch(new BrowserType.LaunchOptions()
+							.setHeadless(Boolean.parseBoolean(ConfigReader.getProperty("headless")))
+							.setArgs(Arrays.asList("--start-maximized")));
+			break;
+
+		case "webkit":
+			browser = playwright.webkit()
+					.launch(new BrowserType.LaunchOptions()
+							.setHeadless(Boolean.parseBoolean(ConfigReader.getProperty("headless")))
+							.setArgs(Arrays.asList("--start-maximized")));
+			break;
+
+		default:
+			throw new IllegalArgumentException("Unsupported browser: " + browserName);
+
+		}
 
 		// Create isolated browser session
 
-		browserContext = browser.newContext();
+		browserContext = browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
 
 		// Open new tab
 		page = browserContext.newPage();
 
 		// Navigate to application
-		page.navigate("https://www.saucedemo.com");
+		page.navigate(ConfigReader.getProperty("url"));
 
 	}
 
