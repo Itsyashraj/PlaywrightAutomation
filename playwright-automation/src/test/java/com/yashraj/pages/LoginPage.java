@@ -1,42 +1,35 @@
 package com.yashraj.pages;
 
-import org.testng.annotations.Test;
-
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.yashraj.base.BasePage;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
 	
-	private final Page page;
+	private final Locator txtUsername;
+    private final Locator txtPassword;
+    private final Locator btnLogin;
 
 	public LoginPage(Page page) {
-		this.page = page;
+		super(page);
+		txtUsername = page.getByPlaceholder("Username");
+	    txtPassword = page.getByPlaceholder("Password");
+	    btnLogin = page.getByRole(
+	            AriaRole.BUTTON,
+	            new Page.GetByRoleOptions().setName("Login"));
 	}
-	
-	// Locators
-    private String username = "#user-name";
-    private String password = "#password";
-    private String loginButton = "#login-button";
-    
- // Actions
-    public void enterUsername(String user) {
-        page.locator(username).fill(user);
-    }
-    
-    public void enterPassword(String pass) {
-        page.locator(password).fill(pass);
-    }
 
-    public void clickLogin() {
-        page.getByRole(AriaRole.BUTTON,
-                new Page.GetByRoleOptions().setName("Login"))
-                .click();
-    }
-    
-    public void login(String user, String pass) {
-        enterUsername(user);
-        enterPassword(pass);
-        clickLogin();
-    }
- 
+
+	// Actions
+
+	public void login(String user, String pass) {
+
+		fill(txtUsername, user);
+
+		fill(txtPassword, pass);
+
+		click(btnLogin);
+	}
+
 }

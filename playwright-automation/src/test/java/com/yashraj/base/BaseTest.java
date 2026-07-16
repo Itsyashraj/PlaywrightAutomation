@@ -5,6 +5,7 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.yashraj.factory.BrowserFactory;
 import com.yashraj.utils.ConfigReader;
 
 import org.testng.annotations.BeforeMethod;
@@ -25,36 +26,8 @@ public class BaseTest {
 		// create playwright insctance
 		playwright = Playwright.create();
 
-		String browserName = ConfigReader.getProperty("browser");
-
-		// Launch browser
-		switch (browserName.toLowerCase()) {
-
-		case "chromium":
-			browser = playwright.chromium()
-					.launch(new BrowserType.LaunchOptions()
-							.setHeadless(Boolean.parseBoolean(ConfigReader.getProperty("headless")))
-							.setArgs(Arrays.asList("--start-maximized")));
-			break;
-
-		case "firefox":
-			browser = playwright.firefox()
-					.launch(new BrowserType.LaunchOptions()
-							.setHeadless(Boolean.parseBoolean(ConfigReader.getProperty("headless")))
-							.setArgs(Arrays.asList("--start-maximized")));
-			break;
-
-		case "webkit":
-			browser = playwright.webkit()
-					.launch(new BrowserType.LaunchOptions()
-							.setHeadless(Boolean.parseBoolean(ConfigReader.getProperty("headless")))
-							.setArgs(Arrays.asList("--start-maximized")));
-			break;
-
-		default:
-			throw new IllegalArgumentException("Unsupported browser: " + browserName);
-
-		}
+		browser = BrowserFactory.launchBrowser(playwright, ConfigReader.getProperty("browser"),
+				Boolean.parseBoolean(ConfigReader.getProperty("headless")));
 
 		// Create isolated browser session
 
