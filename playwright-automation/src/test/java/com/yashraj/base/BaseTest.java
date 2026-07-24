@@ -16,10 +16,14 @@ import org.testng.annotations.AfterMethod;
 
 public class BaseTest {
 
-	protected Playwright playwright;
-	protected Browser browser;
-	protected BrowserContext browserContext;
-	protected Page page;
+	protected static Playwright playwright;
+	protected static Browser browser;
+	protected static BrowserContext browserContext;
+	protected static Page page;
+	
+	public static Page getPage() {
+        return page;
+    }
 
 	@BeforeMethod
 	public void setUp() {
